@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "customer_ai"
+version = "0.0.1"
+description = "End-to-end MLOps pipeline for customer analytics using Olist dataset."
+authors = [
+  { name = "Victor Wei" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+requires-python = "~=3.11.0"
+
+
+[tool.ruff]
+line-length = 99
+src = ["customer_ai"]
+include = ["pyproject.toml", "customer_ai/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["customer_ai"]
+force-sort-within-sections = true
+

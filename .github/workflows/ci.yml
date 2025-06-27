@@ -1,0 +1,27 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: ecomm_ai_py311
+        environment-file: environment.yml
+        auto-activate-base: false
+
+    - name: Lint & type-check
+      run: |
+        black --check .
+        ruff .
+        mypy src/
+
+    - name: Run unit tests
+      run: pytest -q

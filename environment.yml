@@ -1,0 +1,39 @@
+name: ecomm_ai_py311          # Conda env name
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Core Python version
+  - python=3.11
+
+  # Data & ML stack
+  - pandas
+  - numpy
+  - scikit-learn
+  - xgboost
+  - lightgbm
+  - lifetimes            # BG/NBD + Gamma-Gamma
+  - duckdb
+  - prefect              # orchestration
+  - mlflow
+  - sqlalchemy
+  - psycopg2             # Postgres client (for dbt + Tableau)
+  - dbt-core
+  - dbt-postgres
+  - great-expectations
+
+  # Dev / test / lint
+  - pytest
+  - mypy
+  - black
+  - ruff
+  - pre-commit
+
+  # Packages that aren’t on Conda → go under pip:
+  - pip
+  - pip:
+      - evidently>=0.4.12
+      - fastapi
+      - uvicorn[standard]
+      - plotly            # for dashboards
