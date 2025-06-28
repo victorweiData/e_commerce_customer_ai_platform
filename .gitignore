@@ -1,3 +1,7 @@
 # Conda env artifacts
 .conda/
 .env/
+
+# Ignore data (except .gitkeep)
+data/
+!data/raw/.gitkeep
