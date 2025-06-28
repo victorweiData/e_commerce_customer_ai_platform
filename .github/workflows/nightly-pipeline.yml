@@ -1,0 +1,52 @@
+name: 🌙 Nightly E-Comm Pipeline
+
+# Run every night at 3 AM UTC, and allow manual triggers
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-nightly:
+    runs-on: ubuntu-latest
+    env:
+      # assume you’ve set these as repo secrets
+      PG_HOST:     ${{ secrets.PG_HOST }}
+      PG_PORT:     ${{ secrets.PG_PORT }}
+      PG_USER:     ${{ secrets.PG_USER }}
+      PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+      PG_DB:       ${{ secrets.PG_DB }}
+    steps:
+      - name: Checkout  
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda  
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: 3.11
+          environment-file: environment.yml
+          activate-environment: ecomm_ai_py311
+          cache: true
+
+      - name: Create .env for flows  
+        run: |
+          echo "PG_HOST=${PG_HOST}"     > .env
+          echo "PG_PORT=${PG_PORT}"    >> .env
+          echo "PG_USER=${PG_USER}"    >> .env
+          echo "PG_PASSWORD=${PG_PASSWORD}" >> .env
+          echo "PG_DB=${PG_DB}"        >> .env
+
+      - name: Ingest raw data  
+        run: make ingest-fast
+
+      - name: Clean data  
+        run: make clean-data
+
+      - name: Build features  
+        run: make features
+
+      - name: Load into Postgres  
+        run: make db-load
+
+      - name: Train models  
+        run: make train   # assumes you’ve added this target
