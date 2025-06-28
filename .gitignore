@@ -2,6 +2,6 @@
 .conda/
 .env/
 
-# Ignore data (except .gitkeep)
-data/
-!data/raw/.gitkeep
+# Ignore everything in data/ except .gitkeep
+data/*
+!data/**/.gitkeep

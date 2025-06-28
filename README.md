@@ -1,107 +1,161 @@
-E-Commerce Customer AI Platform
+# E-Commerce Customer AI Platform
 
-End-to-end MLOps demo built on the public Olist Brazilian E-commerce dataset. It walks through the whole lifecycle—from raw data ingestion to model serving & monitoring—using production-style tooling.
+An end-to-end MLOps demo built on the public Olist Brazilian E-commerce dataset. This project demonstrates the complete machine learning lifecycle—from raw data ingestion to model serving and monitoring—using production-grade tooling and best practices.
 
-⸻
+## 🎯 Overview
 
-📁 Repository layout
+This platform implements four key customer analytics models:
+- **Late delivery prediction** - Identify orders at risk of late delivery
+- **Customer churn risk** - Predict which customers are likely to churn  
+- **Customer lifetime value (CLTV)** - Estimate long-term customer value
+- **Customer segmentation** - Group customers for targeted marketing
 
-├── customer_ai/            ← Python package (config, features, models)
-│   ├── data/               ← Feature helpers & dataset joins
-│   └── modeling/           ← `train.py` / `predict.py`
-├── data/                   ← raw / interim / processed parquet
-├── flows/                  ← Prefect flows (ingest, clean, train, monitor)
-├── infra/                  ← docker-compose stack (Postgres, Prefect, MLflow, Grafana)
-├── docs/                   ← MkDocs site (optional)
-├── tests/                  ← pytest unit tests
-├── environment.yml         ← Conda environment spec
-├── Makefile                ← one-liners: lint, test, ingest, db-load …
-└── .github/workflows/ci.yml← pre-commit & pytest
+## 📁 Repository Structure
 
+```
+├── customer_ai/              # Core Python package
+│   ├── data/                 # Feature engineering & dataset utilities
+│   └── modeling/             # Model training & prediction modules
+├── data/                     # Data storage (raw/interim/processed parquet files)
+├── flows/                    # Prefect orchestration workflows
+├── infra/                    # Infrastructure (Docker Compose stack)
+├── docs/                     # Documentation (MkDocs)
+├── tests/                    # Unit tests (pytest)
+├── license/                  # License information
+├── environment.yml           # Conda environment specification
+├── Makefile                  # Development shortcuts
+└── .github/workflows/        # CI/CD pipelines
+```
 
-⸻
+## 🚀 Quick Start
 
-🚀 Quick-start (local)
+### Prerequisites
+- Docker & Docker Compose
+- Conda or Miniconda
+- Git
 
-# 1️⃣  Clone & create environment
+### 1. Environment Setup
+```bash
+# Clone the repository
+git clone <repository-url>
+cd e-commerce-customer-ai
+
+# Create and activate conda environment
 conda env create -f environment.yml -n e_comm_ai
 conda activate e_comm_ai
+```
 
-# 2️⃣  Bring up infra stack (detached)
+### 2. Infrastructure Setup
+```bash
+# Start the infrastructure stack (Postgres, Prefect, MLflow, Grafana)
 docker compose -f infra/docker-compose.yml up -d
+```
 
-# 3️⃣  Download + unzip raw Olist data
-python -m flows.ingest_olist          # or: make ingest-fast
+### 3. Data Pipeline
+```bash
+# Download and extract Olist dataset
+python -m flows.ingest_olist
+# Alternative: make ingest-fast
 
-# 4️⃣  Clean raw → processed parquet
-make clean-data                       # runs Prefect `flows.clean_olist`
+# Clean and process raw data
+make clean-data
 
-# 5️⃣  Load processed parquet → Postgres warehouse
-make db-load                          # runs Prefect `flows.load_cleaned_to_db`
+# Load processed data to Postgres warehouse
+make db-load
+```
 
-# 6️⃣  Train baseline models & record to MLflow
-python -m flows.train_models          # WIP
+### 4. Model Training
+```bash
+# Train baseline models and log to MLflow
+python -m flows.train_models
+```
 
-# 7️⃣  Lint, type-check, test
+### 5. Development Tools
+```bash
+# Code formatting, linting, and testing
 make format lint test
+```
 
-Service	URL	Default creds
-MLflow Tracking	http://localhost:5000	–
-Prefect Orion UI	http://localhost:4200	–
-Grafana	http://localhost:3000	admin / admin
-Postgres	localhost:5432/olist	see .env
+## 🌐 Service Access
 
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| MLflow Tracking | http://localhost:5000 | None required |
+| Prefect UI | http://localhost:4200 | None required |
+| Grafana | http://localhost:3000 | admin / admin |
+| Postgres | localhost:5432/olist | See .env configuration |
 
-⸻
+## ⚙️ Configuration
 
-🔑 Environment variables (.env)
+Create a `.env` file in the project root with the following variables:
 
-Create a simple text file named .env in the project root (sibling to Makefile). This file is ignored by Git, so your credentials stay local.
-
+```bash
 PG_HOST=localhost
 PG_PORT=5432
 PG_USER=olist
 PG_PASSWORD=olist
 PG_DB=olist
+```
 
-These variables are automatically picked up by Prefect flows, Docker Compose, and your notebooks.
+> **Note:** The `.env` file is git-ignored to keep credentials secure.
 
-⸻
+## 📊 Model Performance Targets
 
-🔄 CI/CD
-	•	GitHub Actions (ci.yml) installs the Conda environment, then runs pre-commit (black + ruff + mypy) and pytest on every push/PR to main.
-	•	Future: add a deployment job that triggers a Prefect deployment or pushes a Docker image to a registry.
+| Objective | Model Type | Performance Gate |
+|-----------|------------|------------------|
+| Late delivery prediction | LightGBM Classifier | ROC-AUC ≥ 0.80 |
+| Customer churn risk | XGBoost Classifier | ROC-AUC ≥ 0.75 |
+| Customer LTV (CLTV) | BG/NBD + Gamma-Gamma | R² ≥ 0.45 |
+| Customer segmentation | K-Means / HDBSCAN | Silhouette ≥ 0.25 |
 
-⸻
+## 🛠️ Technology Stack
 
-📊 Business objectives & baseline models
+### Core Infrastructure
+- **Orchestration:** Prefect 2
+- **Data Warehouse:** Postgres & DuckDB
+- **Experiment Tracking:** MLflow
+- **Monitoring:** Evidently + Grafana
 
-#	Objective	Model family	Performance gate
-1	Late-delivery prediction	LightGBM classifier	ROC-AUC ≥ 0.80
-2	Customer churn risk	XGBoost classifier	ROC-AUC ≥ 0.75
-3	Customer LTV (CLTV)	BG/NBD + GammaGamma	R² ≥ 0.45
-4	Customer segmentation	K-Means / HDBSCAN	Silhouette ≥ 0.25
+### Data & ML
+- **Transformations:** dbt
+- **ML Libraries:** LightGBM, XGBoost, Lifetimes
+- **Serving:** FastAPI (roadmap)
 
+### Development
+- **CI/CD:** GitHub Actions
+- **Testing:** pytest
+- **Code Quality:** black, ruff, mypy
 
-⸻
+## 🔄 CI/CD Pipeline
 
-🛠️ Tech stack
-	•	Prefect 2 – orchestration
-	•	dbt – SQL transformations & tests
-	•	Postgres & DuckDB – warehouse/local analytics
-	•	MLflow – experiment tracking & model registry
-	•	LightGBM / XGBoost / Lifetimes – modeling libs
-	•	FastAPI – realtime serving (roadmap)
-	•	Evidently + Grafana – data & model drift dashboards
-	•	GitHub Actions – CI gates
+The GitHub Actions workflow (`ci.yml`) automatically:
+- Sets up the Conda environment
+- Runs code quality checks (black, ruff, mypy)
+- Executes the test suite with pytest
+- Triggers on every push/PR to main branch
 
-⸻
+### Roadmap
+- [ ] Deployment automation for Prefect flows
+- [ ] Docker image builds and registry pushes
+- [ ] Model performance monitoring alerts
 
-🌐 References
-	•	Olist dataset – https://www.kaggle.com/olistbr/brazilian-ecommerce
-	•	Prefect docs – https://docs.prefect.io
-	•	dbt docs – https://docs.getdbt.com
+## 📚 References
 
-⸻
+- [Olist Brazilian E-commerce Dataset](https://www.kaggle.com/olistbr/brazilian-ecommerce)
+- [Prefect Documentation](https://docs.prefect.io)
+- [dbt Documentation](https://docs.getdbt.com)
 
-Questions or ideas? Feel free to open an issue or PR!
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to:
+- Open issues for bugs or feature requests
+- Submit pull requests for improvements
+- Share feedback and suggestions
+
+## 📄 License
+
+See the [LICENSE](./license/) folder for license information.
+
+---
+
+**Questions or ideas?** Open an issue or submit a PR!
