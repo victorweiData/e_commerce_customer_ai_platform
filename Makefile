@@ -11,11 +11,11 @@ PYTHON_INTERPRETER = python
 #################################################################################
 
 
-## Install Python dependencies
+## Install Python dependencies (after environment is created)
 .PHONY: requirements
 requirements:
-	conda env update --name $(PROJECT_NAME) --file environment.yml --prune
-	
+	@echo ">>> Updating environment dependencies..."
+	@conda env update --name $(PROJECT_NAME) --file environment.yml --prune
 
 
 
@@ -26,7 +26,7 @@ clean:
 	find . -type d -name "__pycache__" -delete
 
 
-## Lint using ruff (use `make format` to do formatting)
+## Lint using ruff (use `make format` to auto-fix)
 .PHONY: lint
 lint:
 	ruff format --check
@@ -43,25 +43,47 @@ format:
 ## Run tests
 .PHONY: test
 test:
-	python -m pytest tests
+	$(PYTHON_INTERPRETER) -m pytest tests
 
 
-## Set up Python interpreter environment
+## Set up Python interpreter environment (run once)
 .PHONY: create_environment
 create_environment:
-	conda env create --name $(PROJECT_NAME) -f environment.yml
-	
-	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
-	
+	@echo ">>> Creating new conda environment..."
+	@conda env create --name $(PROJECT_NAME) -f environment.yml
+	@echo ">>> Environment created. Activate with:\nconda activate $(PROJECT_NAME)"
 
 
+## Download raw Olist data via Prefect (with dependency check)
+.PHONY: ingest
+ingest: requirements
+	$(PYTHON_INTERPRETER) -c "from flows.ingest_olist import ingest_flow; ingest_flow()"
+
+## Download raw Olist data via Prefect (fast, skip dependency check)
+.PHONY: ingest-fast
+ingest-fast:
+	$(PYTHON_INTERPRETER) -c "from flows.ingest_olist import ingest_flow; ingest_flow()"
+
+## clean the Olist data
+clean-data:
+	$(PYTHON_INTERPRETER) -m flows.clean_olist
+
+## Load cleaned parquet to Postgres
+.PHONY: db-load
+db-load:
+	$(PYTHON_INTERPRETER) -m flows.load_cleaned_to_db
+
+## Build engineered features
+.PHONY: features
+features:
+	$(PYTHON_INTERPRETER) -m flows.feature_builders
 
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
 
 
-## Make dataset
+## Build processed dataset
 .PHONY: data
 data: requirements
 	$(PYTHON_INTERPRETER) customer_ai/dataset.py
@@ -82,5 +104,7 @@ print('\n'.join(['{:25}{}'.format(*reversed(match)) for match in matches]))
 endef
 export PRINT_HELP_PYSCRIPT
 
+## Show this help message
+.PHONY: help
 help:
 	@$(PYTHON_INTERPRETER) -c "${PRINT_HELP_PYSCRIPT}" < $(MAKEFILE_LIST)

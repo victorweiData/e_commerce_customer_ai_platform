@@ -1,31 +1,52 @@
+# infra/docker-compose.yml
 services:
   postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: olist
-      POSTGRES_PASSWORD: olist
-      POSTGRES_DB: olist
-    ports: ["5432:5432"]
-    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    container_name: infra-postgres
+    image: postgres:15-alpine
+    env_file: ../.env                   # PG_USER / PG_PASSWORD / PG_DB / PG_PORT
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      retries: 5
 
   mlflow:
+    container_name: infra-mlflow
     image: ghcr.io/mlflow/mlflow:latest
     command: >
       mlflow server
-      --backend-store-uri sqlite:///mlflow.db
-      --default-artifact-root ./mlruns
-      --host 0.0.0.0
-    ports: ["5000:5000"]
-    volumes: ["./mlruns:/mlruns"]
+        --backend-store-uri sqlite:///mlflow.db
+        --default-artifact-root ./mlruns
+        --host 0.0.0.0
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlruns
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   prefect:
+    container_name: infra-prefect
     image: prefecthq/prefect:2-latest
     command: prefect server start --host 0.0.0.0
-    ports: ["4200:4200"]
+    ports:
+      - "4200:4200"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   grafana:
+    container_name: infra-grafana
     image: grafana/grafana-oss:10.3.1
-    ports: ["3000:3000"]
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
