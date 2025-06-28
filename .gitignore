@@ -2,6 +2,14 @@
 .conda/
 .env/
 
-# Ignore everything in data/ except .gitkeep
-data/*
-!data/**/.gitkeep
+# ─── keep data/ directory and its sub-directories, but ignore all files ───
+
+# 1) ignore everything under data
+/data/**
+
+# 2) allow directories (so Git will know about the folder tree)
+!/data/**/
+
+# 3) allow any .gitkeep files (so you can place one in each empty folder)
+/data/**/.gitkeep
+!/data/**/.gitkeep
