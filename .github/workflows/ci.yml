@@ -1,36 +1,47 @@
+# .github/workflows/ci.yml
 name: CI
 
 on: [push, pull_request]
 
 jobs:
-  build-test:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Cache conda packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.conda/pkgs
+          key: ${{ runner.os }}-conda-${{ hashFiles('environment.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-conda-
+
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          activate-environment: ecomm_ai_py311
-          environment-file: environment.yml
-          auto-activate-base: false
           python-version: 3.11
+          auto-activate-base: false
+          environment-file: environment.yml
+          activate-environment: ecomm_ai_py311
+          cache: true
 
-      - name: Install dev dependencies
-        shell: bash -l {0}
+      - name: Install Pre-commit
         run: |
-          pip install black ruff mypy pytest
+          conda run -n ecomm_ai_py311 pip install pre-commit
+
+      - name: Run Pre-commit hooks
+        run: |
+          conda run -n ecomm_ai_py311 pre-commit run --all-files
 
       - name: Lint & type-check
-        shell: bash -l {0}
         run: |
-          black --check .
-          ruff .
-          mypy customer_ai/
+          conda run -n ecomm_ai_py311 black --check .
+          conda run -n ecomm_ai_py311 ruff .
+          conda run -n ecomm_ai_py311 mypy customer_ai/
 
       - name: Run unit tests
-        shell: bash -l {0}
         run: |
-          pytest -q
+          conda run -n ecomm_ai_py311 pytest --maxfail=1 --disable-warnings -q

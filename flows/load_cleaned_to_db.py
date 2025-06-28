@@ -9,27 +9,28 @@ Or:
 """
 from __future__ import annotations
 
+from datetime import timedelta
 import os
 from pathlib import Path
 from typing import Final, List
 
-import pandas as pd
-from sqlalchemy import create_engine
-from prefect import flow, task, get_run_logger
-from prefect.tasks import task_input_hash
-from datetime import timedelta
-
 # ───────────────────────────────────────────────
 # Environment & paths
 # ───────────────────────────────────────────────
-
 from dotenv import load_dotenv
+import pandas as pd
+from prefect import flow, get_run_logger, task
+from prefect.tasks import task_input_hash
+from sqlalchemy import create_engine
+
 load_dotenv()
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+processed_data_dir_env = os.getenv("PROCESSED_DATA_DIR")
 PROCESSED_DATA_DIR = (
-    Path(os.getenv("PROCESSED_DATA_DIR"))
-    if os.getenv("PROCESSED_DATA_DIR")
+    Path(processed_data_dir_env)
+    if processed_data_dir_env is not None
     else PROJECT_ROOT / "data" / "processed"
 )
 
@@ -59,6 +60,7 @@ TABLE_MAP: Final[dict[str, str]] = {
     "geolocation_clean.parquet": "geolocation_clean",
     "category_translation_clean.parquet": "category_translation_clean",
 }
+
 
 # ───────────────────────────────────────────────
 # Tasks

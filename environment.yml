@@ -1,32 +1,33 @@
+# environment.yml
 name: ecomm_ai_py311          # Conda env name
 channels:
   - conda-forge
   - defaults
 
 dependencies:
-  # Core Python
+  # ── Core Python
   - python=3.11
 
-  # Data stack
+  # ── Data & modeling
   - pandas
   - numpy
   - scikit-learn
   - xgboost
   - lightgbm
-  - lifetimes            # BG/NBD + Gamma-Gamma
+  - lifetimes            # BG/NBD + Gamma–Gamma
   - duckdb
 
-  # Orchestration & tracking
+  # ── Orchestration & tracking
   - prefect              # Prefect 2
   - mlflow
 
-  # DB clients & migrations
+  # ── Database clients & migrations
   - sqlalchemy
   - psycopg2             # Postgres driver
   - dbt-core
   - dbt-postgres
 
-  # Quality & testing
+  # ── Data quality & testing
   - great-expectations
   - pytest
   - mypy
@@ -34,14 +35,14 @@ dependencies:
   - ruff
   - pre-commit
 
-  # Logging & env
+  # ── Logging & environment variables
   - loguru
   - python-dotenv
 
-  # Notebook support
+  # ── Notebook support
   - jupyter
 
-  # fall-back pip installs
+  # ── fall-back pip installs
   - pip
   - pip:
       - evidently>=0.4.12
