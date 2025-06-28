@@ -4,10 +4,10 @@ channels:
   - defaults
 
 dependencies:
-  # Core Python version
+  # Core Python
   - python=3.11
 
-  # Data & ML stack
+  # Data stack
   - pandas
   - numpy
   - scikit-learn
@@ -15,25 +15,36 @@ dependencies:
   - lightgbm
   - lifetimes            # BG/NBD + Gamma-Gamma
   - duckdb
-  - prefect              # orchestration
+
+  # Orchestration & tracking
+  - prefect              # Prefect 2
   - mlflow
+
+  # DB clients & migrations
   - sqlalchemy
-  - psycopg2             # Postgres client (for dbt + Tableau)
+  - psycopg2             # Postgres driver
   - dbt-core
   - dbt-postgres
-  - great-expectations
 
-  # Dev / test / lint
+  # Quality & testing
+  - great-expectations
   - pytest
   - mypy
   - black
   - ruff
   - pre-commit
 
-  # Packages that aren’t on Conda → go under pip:
+  # Logging & env
+  - loguru
+  - python-dotenv
+
+  # Notebook support
+  - jupyter
+
+  # fall-back pip installs
   - pip
   - pip:
       - evidently>=0.4.12
       - fastapi
       - uvicorn[standard]
-      - plotly            # for dashboards
+      - plotly
