@@ -154,7 +154,7 @@ We welcome contributions! Please feel free to:
 
 ## 📄 License
 
-See the [LICENSE](license) for license information.
+See the [LICENSE](LICENSE) for license information.
 
 ---
 
