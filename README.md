@@ -4,7 +4,7 @@ A production-ready MLOps platform built on the Olist Brazilian e-commerce datase
 
 ## 🎥 Demo
 
-[![Watch the demo](![image](https://github.com/user-attachments/assets/0adac602-7bc7-4902-93f6-9d8a869fc6ca))](https://youtu.be/o8FfLyBBcN4)
+[![Watch the demo]![image](https://github.com/user-attachments/assets/b4c5f9f2-a378-49d8-87a8-1536a20f5ecb)(https://youtu.be/o8FfLyBBcN4)
 
 ## 💰 Business Impact
 
