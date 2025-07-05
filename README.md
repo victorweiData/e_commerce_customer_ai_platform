@@ -2,7 +2,7 @@
 
 A production-ready MLOps platform built on the Olist Brazilian e-commerce dataset. This repository demonstrates how to ship real-world machine learning products from raw data to automated retraining, continuous delivery, live dashboards, and model drift monitoring.
 
-## 🎥 Demo([https://youtu.be/-cQ8Yit69gE](url))
+## 🎥 Demo([https://youtu.be/-cQ8Yit69gE])
 
 [![Watch the demo](https://github.com/user-attachments/assets/f8c5c15a-f6a4-4346-816d-eea06cc54cff)]([https://youtu.be/o8FfLyBBcN4](https://youtu.be/-cQ8Yit69gE))
 
