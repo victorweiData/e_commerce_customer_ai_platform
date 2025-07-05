@@ -2,42 +2,41 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = e_commerce_customer_ai_platform
-PYTHON_VERSION = 3.11
-PYTHON_INTERPRETER = python
+PROJECT_NAME        = e_commerce_customer_ai_platform
+PYTHON_VERSION      = 3.11
+PYTHON_INTERPRETER  = python
+RUN_FLOW            = $(PYTHON_INTERPRETER) -c   # helper for “python -c …”
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
-
-## Install Python dependencies (after environment is created)
+## Install / update Python dependencies
 .PHONY: requirements
 requirements:
 	@echo ">>> Updating environment dependencies..."
 	@conda env update --name $(PROJECT_NAME) --file environment.yml --prune
 
 
-
-## Delete all compiled Python files
+## Delete *.py[co] + __pycache__
 .PHONY: clean
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
 
-## Lint using ruff (use `make format` to auto-fix)
+## Lint using ruff
 .PHONY: lint
 lint:
 	ruff format --check
 	ruff check
 
-## Format source code with ruff
+
+## Auto-format with ruff
 .PHONY: format
 format:
 	ruff check --fix
 	ruff format
-
 
 
 ## Run tests
@@ -46,65 +45,105 @@ test:
 	$(PYTHON_INTERPRETER) -m pytest tests
 
 
-## Set up Python interpreter environment (run once)
+## One-off: create the Conda environment
 .PHONY: create_environment
 create_environment:
-	@echo ">>> Creating new conda environment..."
+	@echo ">>> Creating new conda environment…"
 	@conda env create --name $(PROJECT_NAME) -f environment.yml
-	@echo ">>> Environment created. Activate with:\nconda activate $(PROJECT_NAME)"
+	@echo "Activate it with:\nconda activate $(PROJECT_NAME)"
 
 
-## Download raw Olist data via Prefect (with dependency check)
+# ----------------------------------------------------------------------------- #
+# Data ingest / cleaning flows                                                  #
+# ----------------------------------------------------------------------------- #
+
+## Download the raw Olist dataset
 .PHONY: ingest
 ingest: requirements
-	$(PYTHON_INTERPRETER) -c "from flows.ingest_olist import ingest_flow; ingest_flow()"
+	$(RUN_FLOW) "from flows.ingest_olist import ingest_flow; ingest_flow()"
 
-## Download raw Olist data via Prefect (fast, skip dependency check)
+## Faster ingest (skip env check)
 .PHONY: ingest-fast
 ingest-fast:
-	$(PYTHON_INTERPRETER) -c "from flows.ingest_olist import ingest_flow; ingest_flow()"
+	$(RUN_FLOW) "from flows.ingest_olist import ingest_flow; ingest_flow()"
 
-## clean the Olist data
-clean-data:
-	$(PYTHON_INTERPRETER) -m flows.clean_olist
-
-## Load cleaned parquet to Postgres
+## Load cleaned parquet into Postgres
 .PHONY: db-load
 db-load:
-	$(PYTHON_INTERPRETER) -m flows.load_cleaned_to_db
+	$(PYTHON_INTERPRETER) -m flows.load_raw_to_db
 
-## Build engineered features
-.PHONY: features
-features:
-	$(PYTHON_INTERPRETER) -m flows.feature_builders
+
+# ----------------------------------------------------------------------------- #
+# 🔥  CHURN-SPECIFIC TARGETS                                                    #
+# ----------------------------------------------------------------------------- #
+
+## Build churn feature tables (train / val / test)
+.PHONY: churn-features
+churn-features:
+	$(PYTHON_INTERPRETER) flows/build_customer_churn_master.py
+
+## Train / evaluate churn model stand-alone (no Prefect)
+.PHONY: churn-model
+churn-model:
+	$(PYTHON_INTERPRETER) scripts/build_customer_churn.py
+
+## Train churn model **inside Prefect** (tracked in UI)
+.PHONY: churn-model-flow
+churn-model-flow:
+	$(PYTHON_INTERPRETER) flows/build_customer_churn.py
+
+## Full churn pipeline: features ➔ model (flow)
+.PHONY: churn-all
+churn-all: churn-features churn-model-flow
+
+
+# ----------------------------------------------------------------------------- #
+# 🔥  SEGMENTATION-SPECIFIC TARGETS                                             #
+# ----------------------------------------------------------------------------- #
+
+## Build segmentation feature tables
+.PHONY: segment-features
+segment-features:
+	$(PYTHON_INTERPRETER) flows/build_customer_segments_master.py
+
+## Train / evaluate segmentation model stand-alone
+.PHONY: segment-model
+segment-model:
+	$(PYTHON_INTERPRETER) scripts/build_customer_segments.py
+
+## Train segmentation model **inside Prefect**
+.PHONY: segment-model-flow
+segment-model-flow:
+	$(PYTHON_INTERPRETER) flows/build_customer_segments.py
+
+## Full segmentation pipeline: features ➔ model (flow)
+.PHONY: segment-all
+segment-all: segment-features segment-model-flow
+
+## Start React dev server
+.PHONY: dashboard-dev
+dashboard-dev:
+	cd dashboard && npm run dev
+
 
 #################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################
-
-
-## Build processed dataset
-.PHONY: data
-data: requirements
-	$(PYTHON_INTERPRETER) customer_ai/dataset.py
-
-
-#################################################################################
-# Self Documenting Commands                                                     #
+# Self-documenting help                                                         #
 #################################################################################
 
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
-import re, sys; \
-lines = '\n'.join([line for line in sys.stdin]); \
-matches = re.findall(r'\n## (.*)\n[\s\S]+?\n([a-zA-Z_-]+):', lines); \
-print('Available rules:\n'); \
-print('\n'.join(['{:25}{}'.format(*reversed(match)) for match in matches]))
+import re, sys
+print("Available rules:\n")
+for line in sys.stdin:
+    if line.startswith("##"):
+        desc = line[2:].strip()
+        target = next(sys.stdin).split(":")[0].strip()
+        print(f"{target:25} {desc}")
 endef
 export PRINT_HELP_PYSCRIPT
 
 ## Show this help message
 .PHONY: help
 help:
-	@$(PYTHON_INTERPRETER) -c "${PRINT_HELP_PYSCRIPT}" < $(MAKEFILE_LIST)
+	@$(PYTHON_INTERPRETER) -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)

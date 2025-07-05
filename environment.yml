@@ -1,51 +1,60 @@
-# environment.yml
 name: ecomm_ai_py311          # Conda env name
 channels:
-  - conda-forge
+  - conda-forge               # always search here first
   - defaults
 
 dependencies:
   # ── Core Python
-  - python=3.11
+  - python = 3.11
 
-  # ── Data & modeling
+  # ── Data & modelling
   - pandas
   - numpy
   - scikit-learn
-  - xgboost
   - lightgbm
-  - lifetimes            # BG/NBD + Gamma–Gamma
+  - xgboost
+  - lifetimes                # BG/NBD + Gamma–Gamma
   - duckdb
 
-  # ── Orchestration & tracking
-  - prefect              # Prefect 2
-  - mlflow
+  # ── Visualisation / notebook helper
+  - matplotlib
+  - seaborn
+  - ipywidgets               # interactive widgets
+  - ipykernel                # so the env registers in Jupyter
+  - joblib                   # parallel loops
+  - tqdm                     # progress bars
 
-  # ── Database clients & migrations
+  # ── Experiment tracking & orchestration
+  - mlflow
+  - prefect                  # Prefect 2
+
+  # ── Database / data-ops
   - sqlalchemy
-  - psycopg2             # Postgres driver
+  - psycopg2                 # Postgres driver (dbt & Python)
   - dbt-core
   - dbt-postgres
 
-  # ── Data quality & testing
+  # ── Data quality / testing / linting
   - great-expectations
   - pytest
-  - mypy
   - black
   - ruff
+  - mypy
   - pre-commit
 
-  # ── Logging & environment variables
+  # ── Logging & env vars
   - loguru
   - python-dotenv
 
-  # ── Notebook support
-  - jupyter
+  # ── OPTIONAL: Node + npm (for the React dashboard)
+  #     Comment these two lines out if you prefer using nvm or system-wide Node.
+  # - nodejs = 20
 
-  # ── fall-back pip installs
+  # ── fallback PyPI installs
   - pip
   - pip:
-      - evidently>=0.4.12
-      - fastapi
-      - uvicorn[standard]
-      - plotly
+      - kaggle                # dataset downloads
+      - evidently>=0.4.12     # monitoring / drift
+      - fastapi               # API serving
+      - uvicorn[standard]     # ASGI server
+      - plotly                # interactive graphs

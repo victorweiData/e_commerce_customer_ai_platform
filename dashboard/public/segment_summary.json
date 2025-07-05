@@ -1,0 +1,52 @@
+[
+  {
+    "cluster": 0,
+    "customers": 61555,
+    "percentage": 61.9,
+    "avgOrderValue": 115.23,
+    "avgInstallments": 1.94,
+    "avgReviewScore": 4.75,
+    "reviewRate": 1.01,
+    "categoryDiversity": 1.0
+  },
+  {
+    "cluster": 1,
+    "customers": 14539,
+    "percentage": 14.6,
+    "avgOrderValue": 388.95,
+    "avgInstallments": 8.07,
+    "avgReviewScore": 4.23,
+    "reviewRate": 1.01,
+    "categoryDiversity": 1.02
+  },
+  {
+    "cluster": 2,
+    "customers": 2246,
+    "percentage": 2.3,
+    "avgOrderValue": 149.0,
+    "avgInstallments": 1.57,
+    "avgReviewScore": 4.04,
+    "reviewRate": 1.0,
+    "categoryDiversity": 0.98
+  },
+  {
+    "cluster": 3,
+    "customers": 18972,
+    "percentage": 19.1,
+    "avgOrderValue": 135.1,
+    "avgInstallments": 2.32,
+    "avgReviewScore": 1.78,
+    "reviewRate": 0.96,
+    "categoryDiversity": 1.01
+  },
+  {
+    "cluster": 4,
+    "customers": 2129,
+    "percentage": 2.1,
+    "avgOrderValue": 92.88,
+    "avgInstallments": 2.66,
+    "avgReviewScore": 3.13,
+    "reviewRate": 0.99,
+    "categoryDiversity": 0.0
+  }
+]

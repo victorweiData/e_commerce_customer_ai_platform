@@ -1,0 +1,541 @@
+{
+  "generatedAt": "2025-07-05T05:27:27Z",
+  "modelComparison": [
+    {
+      "name": "Logistic Regression",
+      "trainAUC": 0.848,
+      "valAUC": 0.846,
+      "testAUC": 0.829,
+      "f1": 0.723
+    },
+    {
+      "name": "LightGBM",
+      "trainAUC": 0.905,
+      "valAUC": 0.882,
+      "testAUC": 0.866,
+      "f1": 0.769
+    },
+    {
+      "name": "XGBoost",
+      "trainAUC": 0.901,
+      "valAUC": 0.881,
+      "testAUC": 0.865,
+      "f1": 0.766
+    },
+    {
+      "name": "LightGBM (Optuna)",
+      "trainAUC": 0.915,
+      "valAUC": null,
+      "testAUC": 0.866,
+      "f1": 0.778
+    }
+  ],
+  "featureImportance": [
+    {
+      "feature": "payment_value",
+      "importance": 4047
+    },
+    {
+      "feature": "delivery_days_diff_mean",
+      "importance": 3426
+    },
+    {
+      "feature": "delivery_actual_days_mean",
+      "importance": 2802
+    },
+    {
+      "feature": "payment_installments",
+      "importance": 1317
+    },
+    {
+      "feature": "review_review_score_mean",
+      "importance": 641
+    },
+    {
+      "feature": "review_bad_ratio",
+      "importance": 141
+    },
+    {
+      "feature": "delivery_speed_slow",
+      "importance": 140
+    },
+    {
+      "feature": "review_dissatisfied",
+      "importance": 123
+    },
+    {
+      "feature": "delivery_speed_normal",
+      "importance": 104
+    },
+    {
+      "feature": "rfm_hist_monthly_orders",
+      "importance": 86
+    },
+    {
+      "feature": "delivery_speed_fast",
+      "importance": 86
+    },
+    {
+      "feature": "payment_type",
+      "importance": 80
+    },
+    {
+      "feature": "review_review_score_min",
+      "importance": 74
+    },
+    {
+      "feature": "cancellation_ratio",
+      "importance": 45
+    },
+    {
+      "feature": "delivery_dissatisfaction_score",
+      "importance": 25
+    },
+    {
+      "feature": "rfm_hist_payment_value_mean",
+      "importance": 16
+    },
+    {
+      "feature": "rfm_hist_shipping_ratio",
+      "importance": 9
+    },
+    {
+      "feature": "delivery_slow_ratio",
+      "importance": 7
+    },
+    {
+      "feature": "delivery_very_slow_ratio",
+      "importance": 6
+    },
+    {
+      "feature": "payment_high_installments",
+      "importance": 4
+    },
+    {
+      "feature": "delivery_late_ratio",
+      "importance": 2
+    },
+    {
+      "feature": "delivery_speed_very_slow",
+      "importance": 0
+    },
+    {
+      "feature": "payment_multiple_types",
+      "importance": 0
+    },
+    {
+      "feature": "rfm_hist_was_valuable",
+      "importance": 0
+    },
+    {
+      "feature": "rfm_hist_was_frequent",
+      "importance": 0
+    },
+    {
+      "feature": "delivery_likely_dissatisfied",
+      "importance": 0
+    },
+    {
+      "feature": "delivery_consistently_late",
+      "importance": 0
+    },
+    {
+      "feature": "delivery_frequently_slow",
+      "importance": 0
+    },
+    {
+      "feature": "delivery_has_very_slow",
+      "importance": 0
+    },
+    {
+      "feature": "has_cancellations",
+      "importance": 0
+    }
+  ],
+  "optimizationHistory": [
+    {
+      "trial": 1,
+      "auc": 0.872
+    },
+    {
+      "trial": 2,
+      "auc": 0.872
+    },
+    {
+      "trial": 3,
+      "auc": 0.878
+    },
+    {
+      "trial": 4,
+      "auc": 0.876
+    },
+    {
+      "trial": 5,
+      "auc": 0.875
+    },
+    {
+      "trial": 6,
+      "auc": 0.876
+    },
+    {
+      "trial": 7,
+      "auc": 0.872
+    },
+    {
+      "trial": 8,
+      "auc": 0.864
+    },
+    {
+      "trial": 9,
+      "auc": 0.876
+    },
+    {
+      "trial": 10,
+      "auc": 0.875
+    },
+    {
+      "trial": 11,
+      "auc": 0.878
+    },
+    {
+      "trial": 12,
+      "auc": 0.878
+    },
+    {
+      "trial": 13,
+      "auc": 0.875
+    },
+    {
+      "trial": 14,
+      "auc": 0.875
+    },
+    {
+      "trial": 15,
+      "auc": 0.873
+    },
+    {
+      "trial": 16,
+      "auc": 0.878
+    },
+    {
+      "trial": 17,
+      "auc": 0.877
+    },
+    {
+      "trial": 18,
+      "auc": 0.87
+    },
+    {
+      "trial": 19,
+      "auc": 0.879
+    },
+    {
+      "trial": 20,
+      "auc": 0.88
+    },
+    {
+      "trial": 21,
+      "auc": 0.88
+    },
+    {
+      "trial": 22,
+      "auc": 0.88
+    },
+    {
+      "trial": 23,
+      "auc": 0.88
+    },
+    {
+      "trial": 24,
+      "auc": 0.879
+    },
+    {
+      "trial": 25,
+      "auc": 0.878
+    },
+    {
+      "trial": 26,
+      "auc": 0.879
+    },
+    {
+      "trial": 27,
+      "auc": 0.88
+    },
+    {
+      "trial": 28,
+      "auc": 0.879
+    },
+    {
+      "trial": 29,
+      "auc": 0.879
+    },
+    {
+      "trial": 30,
+      "auc": 0.876
+    },
+    {
+      "trial": 31,
+      "auc": 0.873
+    },
+    {
+      "trial": 32,
+      "auc": 0.878
+    },
+    {
+      "trial": 33,
+      "auc": 0.878
+    },
+    {
+      "trial": 34,
+      "auc": 0.879
+    },
+    {
+      "trial": 35,
+      "auc": 0.879
+    },
+    {
+      "trial": 36,
+      "auc": 0.879
+    },
+    {
+      "trial": 37,
+      "auc": 0.879
+    },
+    {
+      "trial": 38,
+      "auc": 0.879
+    },
+    {
+      "trial": 39,
+      "auc": 0.865
+    },
+    {
+      "trial": 40,
+      "auc": 0.878
+    },
+    {
+      "trial": 41,
+      "auc": 0.88
+    },
+    {
+      "trial": 42,
+      "auc": 0.879
+    },
+    {
+      "trial": 43,
+      "auc": 0.88
+    },
+    {
+      "trial": 44,
+      "auc": 0.88
+    },
+    {
+      "trial": 45,
+      "auc": 0.879
+    },
+    {
+      "trial": 46,
+      "auc": 0.876
+    },
+    {
+      "trial": 47,
+      "auc": 0.879
+    },
+    {
+      "trial": 48,
+      "auc": 0.88
+    },
+    {
+      "trial": 49,
+      "auc": 0.872
+    },
+    {
+      "trial": 50,
+      "auc": 0.868
+    }
+  ],
+  "thresholdOptimization": [
+    {
+      "threshold": 0.3,
+      "precision": 0.843,
+      "recall": 0.858,
+      "f1": 0.85,
+      "falsePositives": 1129,
+      "falseNegatives": 1003,
+      "truePositives": 6044,
+      "trueNegatives": 1769,
+      "netBenefit": 1630502,
+      "description": "Low Threshold"
+    },
+    {
+      "threshold": 0.9,
+      "precision": 0.999,
+      "recall": 0.549,
+      "f1": 0.709,
+      "falsePositives": 5,
+      "falseNegatives": 3178,
+      "truePositives": 3869,
+      "trueNegatives": 2893,
+      "netBenefit": -360210,
+      "description": "High Threshold"
+    },
+    {
+      "threshold": 0.05,
+      "precision": 0.73,
+      "recall": 0.998,
+      "f1": 0.843,
+      "falsePositives": 2607,
+      "falseNegatives": 16,
+      "truePositives": 7031,
+      "trueNegatives": 291,
+      "netBenefit": 2509675,
+      "description": "Recommended"
+    }
+  ],
+  "recommendedThreshold": 0.05,
+  "riskSegmentation": [
+    {
+      "name": "High Risk",
+      "count": 40880,
+      "percentage": 41.1,
+      "churnRate": 0.99,
+      "color": "#ef4444"
+    },
+    {
+      "name": "Medium Risk",
+      "count": 30850,
+      "percentage": 31.0,
+      "churnRate": 0.65,
+      "color": "#f59e0b"
+    },
+    {
+      "name": "Low Risk",
+      "count": 27720,
+      "percentage": 27.9,
+      "churnRate": 0.36,
+      "color": "#10b981"
+    }
+  ],
+  "businessImpact": {
+    "revenueSaved": 18305733,
+    "retentionCosts": 1236500,
+    "missedRevenue": 13361481,
+    "netBenefit": 3707752
+  },
+  "monthlyMetrics": [
+    {
+      "month": "2024-07",
+      "churnRate": 0.35,
+      "retentionRate": 0.65,
+      "totalCustomers": 99450,
+      "churnedCustomers": 34807
+    },
+    {
+      "month": "2024-08",
+      "churnRate": 0.335,
+      "retentionRate": 0.665,
+      "totalCustomers": 99550,
+      "churnedCustomers": 33349
+    },
+    {
+      "month": "2024-09",
+      "churnRate": 0.32,
+      "retentionRate": 0.68,
+      "totalCustomers": 99650,
+      "churnedCustomers": 31887
+    },
+    {
+      "month": "2024-10",
+      "churnRate": 0.305,
+      "retentionRate": 0.695,
+      "totalCustomers": 99750,
+      "churnedCustomers": 30423
+    },
+    {
+      "month": "2024-11",
+      "churnRate": 0.29,
+      "retentionRate": 0.71,
+      "totalCustomers": 99850,
+      "churnedCustomers": 28956
+    },
+    {
+      "month": "2024-12",
+      "churnRate": 0.275,
+      "retentionRate": 0.725,
+      "totalCustomers": 99950,
+      "churnedCustomers": 27486
+    },
+    {
+      "month": "2024-12",
+      "churnRate": 0.26,
+      "retentionRate": 0.74,
+      "totalCustomers": 100050,
+      "churnedCustomers": 26013
+    },
+    {
+      "month": "2025-01",
+      "churnRate": 0.245,
+      "retentionRate": 0.755,
+      "totalCustomers": 100150,
+      "churnedCustomers": 24536
+    },
+    {
+      "month": "2025-03",
+      "churnRate": 0.23,
+      "retentionRate": 0.77,
+      "totalCustomers": 100250,
+      "churnedCustomers": 23057
+    },
+    {
+      "month": "2025-03",
+      "churnRate": 0.215,
+      "retentionRate": 0.785,
+      "totalCustomers": 100350,
+      "churnedCustomers": 21575
+    },
+    {
+      "month": "2025-04",
+      "churnRate": 0.2,
+      "retentionRate": 0.8,
+      "totalCustomers": 100450,
+      "churnedCustomers": 20090
+    },
+    {
+      "month": "2025-05",
+      "churnRate": 0.185,
+      "retentionRate": 0.815,
+      "totalCustomers": 100550,
+      "churnedCustomers": 18601
+    }
+  ],
+  "customerSegments": [
+    {
+      "name": "High-Value Loyal",
+      "count": 14917,
+      "avgOrderValue": 160.20000000000002,
+      "churnRate": 0.05,
+      "description": "Premium customers with high AOV and low churn risk"
+    },
+    {
+      "name": "Regular Buyers",
+      "count": 44752,
+      "avgOrderValue": 89,
+      "churnRate": 0.18,
+      "description": "Consistent customers with average purchase behavior"
+    },
+    {
+      "name": "Occasional Shoppers",
+      "count": 24862,
+      "avgOrderValue": 62.3,
+      "churnRate": 0.35,
+      "description": "Infrequent buyers with higher churn risk"
+    },
+    {
+      "name": "New Customers",
+      "count": 14917,
+      "avgOrderValue": 53.4,
+      "churnRate": 0.45,
+      "description": "Recently acquired customers still building loyalty"
+    }
+  ]
+}

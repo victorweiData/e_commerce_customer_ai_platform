@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* ── Enable incremental builds for your build-info file ────────────── */
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    /* ── Language target & libraries ──────────────────────────────────── */
+    "target": "ES2023",
+    "lib": ["ES2023"],
+
+    /* ── Module resolution for Vite in “bundler” mode ────────────────── */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+
+    /* ── Emit / checking behavior ─────────────────────────────────────── */
+    "noEmit": true,
+    "skipLibCheck": true,
+
+    /* ── Strictness & linting ────────────────────────────────────────── */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
