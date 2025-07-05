@@ -1,10 +1,10 @@
-# E-Commerce Customer AI Platform 🚀
+![image](https://github.com/user-attachments/assets/239cea68-b00d-45a7-97c1-abe2c1351341)![image](https://github.com/user-attachments/assets/9fabbfcf-3eaf-43c1-8126-a6108ea669a3)# E-Commerce Customer AI Platform 🚀
 
 A production-ready MLOps platform built on the Olist Brazilian e-commerce dataset. This repository demonstrates how to ship real-world machine learning products from raw data to automated retraining, continuous delivery, live dashboards, and model drift monitoring.
 
 ## 🎥 Demo
 
-[![Watch the demo](https://img.youtube.com/vi/o8FfLyBBcN4/hqdefault.jpg)](https://youtu.be/o8FfLyBBcN4)
+[![Watch the demo](![image](https://github.com/user-attachments/assets/0adac602-7bc7-4902-93f6-9d8a869fc6ca))](https://youtu.be/o8FfLyBBcN4)
 
 ## 💰 Business Impact
 
