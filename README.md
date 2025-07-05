@@ -2,6 +2,12 @@
 
 A production-ready MLOps platform built on the Olist Brazilian e-commerce dataset. This repository demonstrates how to ship real-world machine learning products from raw data to automated retraining, continuous delivery, live dashboards, and model drift monitoring.
 
+## 💰 Business Impact
+
+- **💵 Cost Savings:** $2.5M saved through churn prevention
+- **👥 Customer Retention:** 60k+ customers retained
+- **⚙️ Operational Efficiency:** 85% reduction in manual ML workflow tasks
+
 ## 🌟 Key Features
 
 | Feature | Description |
@@ -44,15 +50,14 @@ objective above live in **`/reports/`**
 - **🎨 Frontend** → React + Vite + Tailwind CSS
 - **🛠️ Dev Experience** → Conda • Makefile
 
+
 ## 📈 Automated Pipeline Architecture
 
 ### 🔄 Data & Feature Engineering
-- **Flow:** `flows/feature_builders.py`
 - **Schedule:** Daily at 02:00 UTC
 - **Output:** Parquet feature tables + PostgreSQL incremental loads
 
 ### 🧠 Model Training & Evaluation
-- **Flow:** `flows/build_customer_churn.py`
 - **Schedule:** Nightly at 02:30 UTC (after fresh features)
 - **Process:**
   1. Train baseline + tuned models (LogReg, LightGBM, XGBoost)
@@ -61,7 +66,6 @@ objective above live in **`/reports/`**
   4. Push artifacts to S3-compatible MinIO bucket
 
 ### 📊 Drift & Performance Monitoring
-- **Flow:** `flows/monitor_churn.py` (hourly execution)
 - **Tools:** Evidently statistical tests + Grafana dashboards
 - **Alerts:** Slack notifications when PSI > 0.2 or weekly ROC-AUC drops > 3%
 
@@ -101,11 +105,6 @@ objective above live in **`/reports/`**
 | **🚀 Deploy** | Release tag | Helm upgrade on staging cluster |
 | **🌙 Nightly ML** | Cron 02:00 UTC | `prefect deployment run build_customer_churn` |
 
-## 💰 Business Impact
-
-- **💵 Cost Savings:** $2.5M saved through churn prevention
-- **👥 Customer Retention:** 60k+ customers retained
-- **⚙️ Operational Efficiency:** 85% reduction in manual ML workflow tasks
 
 ## 🤝 Contributing
 
